@@ -33,13 +33,41 @@ fn main() {
     }
 
     let v_len = &numbers_vector.len();
-    let max_width = v_len/2;
-    println!("size: {}, max-width: {}", &v_len, &max_width);
+    let middle = v_len/2;
+    let mut max_size = 1;
+    println!("size: {}, max-width: {}", &v_len, &middle);
 
-//    let mut width;
-//    let mut left;
-    for n in &numbers_vector {
-        println!("number: {}", n);
+    let mut width = 1;
+    let mut left;
+    let mut right;
+
+    let mut i = 0;
+    loop {
+        for _w in 1..(width + 1) {
+            //println!("width: {}", _w);
+            left = i;
+            print!("index: {}, left: {}, ", i, &numbers_vector[left]);
+            i += 1;
+            if i >= *v_len {
+                break;
+            }
+            right = i;
+            println!("index: {}, right: {}", i, &numbers_vector[right]);
+            i += 1;
+            if &numbers_vector[left] > &numbers_vector[right] {
+                println!("swap {} and {}", &numbers_vector[left], &numbers_vector[right]);
+                let tmp = numbers_vector[left];
+                numbers_vector[left] = numbers_vector[right];
+                numbers_vector[right] = tmp;
+            }
+        }
+        if i >= *v_len {
+            println!("done");
+            break;
+        }
     }
 
+    for n in &numbers_vector {
+        println!("first sort-iteration: {}", n);
+    }
 }

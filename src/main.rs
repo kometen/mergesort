@@ -67,7 +67,14 @@ fn main() {
         }
     }
 
+    let mut first_element = true;
     for n in &numbers_vector {
-        println!("first sort-iteration: {}", n);
+        if first_element == true {
+            print!("{}", n);
+            first_element = false;
+        } else {
+            print!(", {}", n);
+        }
     }
+    println!();
 }

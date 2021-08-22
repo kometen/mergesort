@@ -43,23 +43,21 @@ fn main() {
 
     let mut i = 0;
     loop {
-        for _w in 1..(width + 1) {
-            //println!("width: {}", _w);
-            left = i;
-            print!("index: {}, left: {}, ", i, &numbers_vector[left]);
-            i += 1;
-            if i >= *v_len {
-                break;
-            }
-            right = i;
-            println!("index: {}, right: {}", i, &numbers_vector[right]);
-            i += 1;
-            if &numbers_vector[left] > &numbers_vector[right] {
-                println!("swap {} and {}", &numbers_vector[left], &numbers_vector[right]);
-                let tmp = numbers_vector[left];
-                numbers_vector[left] = numbers_vector[right];
-                numbers_vector[right] = tmp;
-            }
+        //println!("width: {}", _w);
+        left = i;
+        print!("index: {}, left: {}, ", i, &numbers_vector[left]);
+        i += 1;
+        if i >= *v_len {
+            break;
+        }
+        right = i;
+        println!("index: {}, right: {}", i, &numbers_vector[right]);
+        i += 1;
+        if &numbers_vector[left] > &numbers_vector[right] {
+            println!("swap {} and {}", &numbers_vector[left], &numbers_vector[right]);
+            let tmp = numbers_vector[left];
+            numbers_vector[left] = numbers_vector[right];
+            numbers_vector[right] = tmp;
         }
         if i >= *v_len {
             println!("done");
@@ -68,6 +66,7 @@ fn main() {
     }
 
     let mut first_element = true;
+    print!("\nfirst sort: ");
     for n in &numbers_vector {
         if first_element == true {
             print!("{}", n);

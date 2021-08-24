@@ -3,6 +3,20 @@ extern crate clap;
 use clap::{Arg, App};
 use std::process::exit;
 
+fn msb(n: usize) -> usize {
+    if n == 0 { return 0; }
+
+    let mut msb = 0;
+    let mut n = n;
+    n = n / 2;
+    while n != 0 {
+        n = n / 2;
+        msb = msb + 1;
+    }
+
+    return 1 << msb;
+}
+
 fn main() {
     let mut numbers_vector: Vec<i32> = Vec::new();
 
@@ -33,17 +47,20 @@ fn main() {
     }
 
     let v_len = &numbers_vector.len();
-    let middle = v_len/2;
-    let mut max_size = 1;
-    println!("size: {}, max-width: {}", &v_len, &middle);
+    let most_significant_bit = msb(*v_len);
 
+    let mut max_size = 1;
+    println!("size: {}, most significant bit: {}", &v_len, &most_significant_bit);
+
+    let mut sorted = true;
     let mut width = 1;
     let mut left;
     let mut right;
 
     let mut i = 0;
+
+    // Just loop comparing neighbouring elements.
     loop {
-        //println!("width: {}", _w);
         left = i;
         print!("index: {}, left: {}, ", i, &numbers_vector[left]);
         i += 1;
@@ -54,6 +71,7 @@ fn main() {
         println!("index: {}, right: {}", i, &numbers_vector[right]);
         i += 1;
         if &numbers_vector[left] > &numbers_vector[right] {
+            sorted = false;
             println!("swap {} and {}", &numbers_vector[left], &numbers_vector[right]);
             let tmp = numbers_vector[left];
             numbers_vector[left] = numbers_vector[right];
@@ -63,6 +81,11 @@ fn main() {
             println!("done");
             break;
         }
+    }
+
+    if sorted == true {
+        println!("Already sorted");
+        exit(0);
     }
 
     let mut first_element = true;

@@ -49,38 +49,48 @@ fn main() {
     let v_len = &numbers_vector.len();
     let most_significant_bit = msb(*v_len);
 
-    let mut max_size = 1;
     println!("size: {}, most significant bit: {}", &v_len, &most_significant_bit);
 
     let mut sorted = true;
     let mut width = 1;
-    let mut left;
-    let mut right;
+    let mut left_pointer;
+    let mut right_pointer;
 
-    let mut i = 0;
-
-    // Just loop comparing neighbouring elements.
+    // First loop defines width, which is the space between left and right pointer.
+    // Second loop will compare elements and swap if needed.
     loop {
-        left = i;
-        print!("index: {}, left: {}, ", i, &numbers_vector[left]);
-        i += 1;
-        if i >= *v_len {
+        if width > most_significant_bit {
             break;
         }
-        right = i;
-        println!("index: {}, right: {}", i, &numbers_vector[right]);
-        i += 1;
-        if &numbers_vector[left] > &numbers_vector[right] {
-            sorted = false;
-            println!("swap {} and {}", &numbers_vector[left], &numbers_vector[right]);
-            let tmp = numbers_vector[left];
-            numbers_vector[left] = numbers_vector[right];
-            numbers_vector[right] = tmp;
+
+        println!("\nwidth: {}", width);
+
+        left_pointer = 0;
+
+        loop {
+            print!("index: {}, left: {}, ", left_pointer, &numbers_vector[left_pointer]);
+            right_pointer = left_pointer + width;
+
+            if right_pointer >= *v_len {
+                break;
+            }
+
+            print!("index: {}, right: {}", right_pointer, &numbers_vector[right_pointer]);
+
+            if &numbers_vector[left_pointer] > &numbers_vector[right_pointer] {
+                sorted = false;
+                print!(", swap {} and {}", &numbers_vector[left_pointer], &numbers_vector[right_pointer]);
+                let tmp = numbers_vector[left_pointer];
+                numbers_vector[left_pointer] = numbers_vector[right_pointer];
+                numbers_vector[right_pointer] = tmp;
+            }
+
+            println!();
+
+            left_pointer = right_pointer + width;
         }
-        if i >= *v_len {
-            println!("done");
-            break;
-        }
+
+        width = width * 2;
     }
 
     if sorted == true {
@@ -89,7 +99,7 @@ fn main() {
     }
 
     let mut first_element = true;
-    print!("\nfirst sort: ");
+    print!("\nsort: ");
     for n in &numbers_vector {
         if first_element == true {
             print!("{}", n);

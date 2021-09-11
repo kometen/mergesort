@@ -60,6 +60,7 @@ fn main() {
     // Second loop will compare elements and swap if needed.
     loop {
         if width > most_significant_bit {
+            println!("Reached halfway through the list, we should be done sorting");
             break;
         }
 
@@ -68,6 +69,10 @@ fn main() {
         left_pointer = 0;
 
         loop {
+            if left_pointer > *v_len {
+                break;
+            }
+
             print!("index: {}, left: {}, ", left_pointer, &numbers_vector[left_pointer]);
             right_pointer = left_pointer + width;
 

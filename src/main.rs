@@ -3,20 +3,6 @@ extern crate clap;
 use clap::{Arg, App};
 use std::process::exit;
 
-fn msb(n: usize) -> usize {
-    if n == 0 { return 0; }
-
-    let mut msb = 0;
-    let mut n = n;
-    n = n / 2;
-    while n != 0 {
-        n = n / 2;
-        msb = msb + 1;
-    }
-
-    return 1 << msb;
-}
-
 fn main() {
     let mut numbers_vector: Vec<i32> = Vec::new();
 
@@ -47,9 +33,8 @@ fn main() {
     }
 
     let v_len = &numbers_vector.len();
-    let most_significant_bit = msb(*v_len);
 
-    println!("size: {}, most significant bit: {}", &v_len, &most_significant_bit);
+    println!("size: {}", &v_len);
 
     let mut sorted = true;
     let mut width = 1;
@@ -59,41 +44,44 @@ fn main() {
     // First loop defines width, which is the space between left and right pointer.
     // Second loop will compare elements and swap if needed.
     loop {
-        if width > most_significant_bit {
-            println!("Reached halfway through the list, we should be done sorting");
-            break;
-        }
-
         println!("\nwidth: {}", width);
 
         left_pointer = 0;
 
         loop {
-            if left_pointer > *v_len {
-                break;
-            }
-
-            print!("index: {}, left: {}, ", left_pointer, &numbers_vector[left_pointer]);
+            //print!("index: {}, left: {}, ", left_pointer, &numbers_vector[left_pointer]);
             right_pointer = left_pointer + width;
 
             if right_pointer >= *v_len {
                 break;
             }
 
-            print!("index: {}, right: {}", right_pointer, &numbers_vector[right_pointer]);
+            //print!("index: {}, right: {}", right_pointer, &numbers_vector[right_pointer]);
 
+            let mut swapped = false;
             let mut x = 0;
+            let mut left = left_pointer;
+            let mut right = right_pointer;
             loop {
-                if &numbers_vector[left_pointer] > &numbers_vector[right_pointer] {
+                if right >= *v_len {
+                    break;
+                }
+                print!("left: {}, right: {}, ", &numbers_vector[left], &numbers_vector[right]);
+                if &numbers_vector[left] > &numbers_vector[right] {
                     sorted = false;
-                    print!(", swap {} and {}", &numbers_vector[left_pointer], &numbers_vector[right_pointer]);
-                    let tmp = numbers_vector[left_pointer];
-                    numbers_vector[left_pointer] = numbers_vector[right_pointer];
-                    numbers_vector[right_pointer] = tmp;
+                    swapped = true;
+                    println!(", swap {} and {}", &numbers_vector[left], &numbers_vector[right]);
+                    let tmp = numbers_vector[left];
+                    numbers_vector[left] = numbers_vector[right];
+                    numbers_vector[right] = tmp;
                 }
                 x += 1;
-                if x >= width {
+                if (x >= width && swapped == false) || (right >= width * 2 && swapped == true) {
                     break;
+                }
+                left += 1;
+                if left == right {
+                    right += 1;
                 }
             }
 
@@ -102,7 +90,13 @@ fn main() {
             left_pointer = right_pointer + width;
         }
 
+        if &width > v_len {
+            println!("Reached halfway through the list, we should be done sorting");
+            break;
+        }
+
         width = width * 2;
+
     }
 
     if sorted == true {
@@ -111,7 +105,7 @@ fn main() {
     }
 
     let mut first_element = true;
-    print!("\nsort: ");
+    print!("\nsorted: ");
     for n in &numbers_vector {
         if first_element == true {
             print!("{}", n);

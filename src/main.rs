@@ -82,12 +82,19 @@ fn main() {
 
             print!("index: {}, right: {}", right_pointer, &numbers_vector[right_pointer]);
 
-            if &numbers_vector[left_pointer] > &numbers_vector[right_pointer] {
-                sorted = false;
-                print!(", swap {} and {}", &numbers_vector[left_pointer], &numbers_vector[right_pointer]);
-                let tmp = numbers_vector[left_pointer];
-                numbers_vector[left_pointer] = numbers_vector[right_pointer];
-                numbers_vector[right_pointer] = tmp;
+            let mut x = 0;
+            loop {
+                if &numbers_vector[left_pointer] > &numbers_vector[right_pointer] {
+                    sorted = false;
+                    print!(", swap {} and {}", &numbers_vector[left_pointer], &numbers_vector[right_pointer]);
+                    let tmp = numbers_vector[left_pointer];
+                    numbers_vector[left_pointer] = numbers_vector[right_pointer];
+                    numbers_vector[right_pointer] = tmp;
+                }
+                x += 1;
+                if x >= width {
+                    break;
+                }
             }
 
             println!();
